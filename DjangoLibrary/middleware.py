@@ -42,7 +42,7 @@ class AutologinAuthenticationMiddleware(AuthenticationMiddleware):
                 auth.login(request, user)
 
 
-class FactoryBoyMiddleware():
+class FactoryBoyMiddleware(AuthenticationMiddleware):
 
     def _get_foreign_key_fields(self, FactoryBoyClass):
         foreign_key_fields = []
@@ -110,7 +110,7 @@ class FactoryBoyMiddleware():
         return JsonResponse(model_to_dict(obj), status=201)
 
 
-class QuerySetMiddleware():
+class QuerySetMiddleware(AuthenticationMiddleware):
 
     def process_request(self, request):
         model_name = request.GET.get('MODEL_PATH')
