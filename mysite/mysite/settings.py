@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'travis_ci_test',
+        'NAME': 'robotframework',
         'USER': 'postgres',
         'PASSWORD': '',
         'HOST': 'localhost',

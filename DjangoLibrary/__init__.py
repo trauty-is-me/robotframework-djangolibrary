@@ -10,6 +10,7 @@ import requests
 import signal
 import six
 import subprocess
+import time
 
 __version__ = '1.0'
 ROBOT_LIBRARY_DOC_FORMAT = 'reST'
@@ -86,15 +87,6 @@ class DjangoLibrary:
                 "Use the 'settings' parameter instead to set a " +
                 "database connection."
             )
-
-    def manage_makemigrations(self):
-        """Create migrations by running 'python manage.py makemigrations'."""
-        args = [
-            'python',
-            self.manage,
-            'makemigrations',
-        ]
-        subprocess.call(args)
 
     def manage_migrate(self):
         """Execute migration by running 'python manage.py migrate'."""
@@ -174,9 +166,8 @@ user.save()""".format(
 
     def start_django(self):
         """Start the Django server."""
-        self.manage_flush()
-        self.manage_makemigrations()
-        self.manage_migrate()
+        # self.manage_flush()
+        # self.manage_migrate()
         logger.console("-" * 78)
         args = [
             'python',
@@ -188,11 +179,23 @@ user.save()""".format(
             '--settings=%s' % self.settings,
         ]
 
-        self.django_pid = subprocess.Popen(
+        worker = subprocess.Popen(
             args,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
-        ).pid
+        )
+        counter = 0
+        while True:
+            try:
+                requests.get('http://%s:%s/' % (self.host, self.port))
+                break
+            except requests.ConnectionError:
+                counter += 1
+                time.sleep(1)
+                if counter > 60:
+                    break
+
+        self.django_pid = worker.pid
         logger.console(
             "Django started (PID: %s)" % self.django_pid,
         )

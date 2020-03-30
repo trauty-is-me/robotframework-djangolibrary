@@ -144,7 +144,7 @@ Factory Boy Keyword Should Raise an Exception On Broken Class
   ${expected_error}=  catenate  SEPARATOR=${SPACE}
   ...  HTTPError: FactoryBoyClass
   ...  "DjangoLibrary.tests.factories.BrokenFactory"
-  ...  could not be instantiated with args "{}"
+  ...  could not be instantiated with args "{}" Throws error: 'str' object has no attribute '_default_manager'
   Run Keyword and Expect Error  ${expected_error}  Factory Boy  DjangoLibrary.tests.factories.BrokenFactory
 
 Factory Boy Keyword Should Raise an Exception On Class Without Meta Class
@@ -152,6 +152,8 @@ Factory Boy Keyword Should Raise an Exception On Class Without Meta Class
   ...  HTTPError: FactoryBoyClass
   ...  "DjangoLibrary.tests.factories.BrokenFactoryWithoutMetaClass"
   ...  could not be instantiated with args "{}"
+  ...  Throws error: Cannot generate instances of abstract factory BrokenFactoryWithoutMetaClass;
+  ...  Ensure BrokenFactoryWithoutMetaClass.Meta.model is set and BrokenFactoryWithoutMetaClass.Meta.abstract is either not set or False.
   Run Keyword and Expect Error  ${expected_error}  Factory Boy  DjangoLibrary.tests.factories.BrokenFactoryWithoutMetaClass
 
 Factory Boy Keyword Should Raise an Exception If Class Does Not Inherit From DjangoModelFactory

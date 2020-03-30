@@ -86,12 +86,13 @@ class FactoryBoyMiddleware(AuthenticationMiddleware):
         self._foreign_key_to_model(FactoryBoyClass, factory_boy_args)
         try:
             obj = FactoryBoyClass(**factory_boy_args)
-        except:  # noqa
+        except Exception as exc:  # noqa
             return JsonResponse(
                 {
                     'error': 'FactoryBoyClass "{}" '.format(model_name) +
-                    'could not be instantiated with args "{}"'.format(
-                        factory_boy_args
+                    'could not be instantiated with args "{}" Throws error: {}'.format(
+                        factory_boy_args,
+                        exc,
                     )
                 },
                 status=400
